@@ -1,0 +1,15 @@
+{
+  "name": "hbw",
+  "version": "0.1.0",
+  "private": true,
+  "description": "HummingBird Workbench (Tauri) — Phase 0 scaffold",
+  "scripts": {
+    "test": "node -e \"console.log('hbw: scaffold — no tests yet')\"",
+    "tauri": "tauri",
+    "dev": "tauri dev",
+    "build": "tauri build"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.0.0"
+  }
+}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>HBW</title>
+    <style>
+      nav { display: flex; gap: 1rem; margin-bottom: 1rem; }
+      nav a { text-decoration: none; }
+      .view { display: none; }
+      .view.active { display: block; }
+    </style>
+  </head>
+  <body>
+    <h1>HummingBird Workbench</h1>
+    <nav>
+      <a href="#/">Repos</a>
+      <a href="#/diff">Diff</a>
+      <a href="#/automation">Automation</a>
+      <a href="#/review">Review</a>
+      <a href="#/collab">Collab</a>
+    </nav>
+    <section id="view-home" class="view active">
+      <h2>Repositories</h2>
+      <p>Phase 0 M2 — repo list placeholder.</p>
+    </section>
+    <section id="view-diff" class="view">
+      <h2>HNF Diff</h2>
+      <p>Phase 0 M2 — diff viewer shell.</p>
+    </section>
+    <section id="view-automation" class="view">
+      <h2>Automation Studio</h2>
+      <p>Phase 0 M3 — built-in workflow checks.</p>
+    </section>
+    <section id="view-review" class="view">
+      <h2>Review</h2>
+      <p>Phase 0 M3 — review panel stub.</p>
+    </section>
+    <section id="view-collab" class="view">
+      <h2>Collaboration</h2>
+      <p>Phase 0 M3 — presence and activity feed.</p>
+    </section>
+    <script>
+      const routes = {
+        "/": "view-home",
+        "/diff": "view-diff",
+        "/automation": "view-automation",
+        "/review": "view-review",
+        "/collab": "view-collab",
+      };
+      function showRoute() {
+        const hash = location.hash.replace(/^#/, "") || "/";
+        const base = hash.startsWith("/repo/") ? "/" : hash.split("?")[0];
+        document.querySelectorAll(".view").forEach((el) => el.classList.remove("active"));
+        const id = routes[base] || "view-home";
+        document.getElementById(id)?.classList.add("active");
+      }
+      window.addEventListener("hashchange", showRoute);
+      showRoute();
+    </script>
+  </body>
+</html>

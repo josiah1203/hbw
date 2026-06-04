@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "HummingBird Workbench",
+  "version": "0.1.0",
+  "identifier": "dev.hummingbird.hbw",
+  "build": {
+    "frontendDist": "../src"
+  },
+  "app": {
+    "windows": [{ "title": "HBW", "width": 1024, "height": 768 }]
+  }
+}
