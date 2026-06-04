@@ -2,14 +2,29 @@
   "name": "hbw",
   "version": "0.1.0",
   "private": true,
-  "description": "HummingBird Workbench (Tauri) — Phase 0 scaffold",
+  "description": "HummingBird Workbench (Tauri) — Phase 0 alpha shell",
+  "type": "module",
   "scripts": {
-    "test": "node -e \"console.log('hbw: scaffold — no tests yet')\"",
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "tsc --noEmit && vite build",
     "tauri": "tauri",
-    "dev": "tauri dev",
-    "build": "tauri build"
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^2.0.0"
+    "@tauri-apps/cli": "^2.0.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
   }
 }

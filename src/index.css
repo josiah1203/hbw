@@ -1,0 +1,322 @@
+:root {
+  --hb-bg: #0f1419;
+  --hb-surface: #1a2332;
+  --hb-surface-elevated: #243044;
+  --hb-border: #2d3a4f;
+  --hb-text: #e8edf4;
+  --hb-text-muted: #8b9cb3;
+  --hb-accent: #3d9eff;
+  --hb-accent-dim: #2563a8;
+  --hb-merge: #c084fc;
+  --hb-add: #4ade80;
+  --hb-remove: #f87171;
+  --hb-modify: #fbbf24;
+  --hb-sidebar-width: 220px;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--hb-text);
+  background: var(--hb-bg);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.hb-app {
+  display: flex;
+  min-height: 100vh;
+}
+
+.hb-sidebar {
+  width: var(--hb-sidebar-width);
+  flex-shrink: 0;
+  background: var(--hb-surface);
+  border-right: 1px solid var(--hb-border);
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+}
+
+.hb-brand {
+  padding: 0 1rem 1.25rem;
+  border-bottom: 1px solid var(--hb-border);
+  margin-bottom: 0.75rem;
+}
+
+.hb-brand h1 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.hb-brand span {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.7rem;
+  color: var(--hb-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.hb-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0 0.5rem;
+  flex: 1;
+}
+
+.hb-nav a {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--hb-text-muted);
+  transition: background 0.15s, color 0.15s;
+}
+
+.hb-nav a:hover {
+  background: var(--hb-surface-elevated);
+  color: var(--hb-text);
+}
+
+.hb-nav a.active {
+  background: var(--hb-accent-dim);
+  color: var(--hb-text);
+}
+
+.hb-nav-section {
+  margin-top: 1rem;
+  padding: 0 0.75rem 0.35rem;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--hb-text-muted);
+}
+
+.hb-nav a.disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.hb-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.hb-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--hb-border);
+  background: var(--hb-surface);
+}
+
+.hb-header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.hb-header p {
+  margin: 0.35rem 0 0;
+  color: var(--hb-text-muted);
+  font-size: 0.85rem;
+}
+
+.hb-content {
+  padding: 1.25rem 1.5rem;
+  flex: 1;
+  overflow: auto;
+}
+
+.hb-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.hb-card {
+  background: var(--hb-surface);
+  border: 1px solid var(--hb-border);
+  border-radius: 8px;
+  padding: 1rem;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s;
+}
+
+.hb-card:hover {
+  border-color: var(--hb-accent);
+}
+
+.hb-card h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+}
+
+.hb-card p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--hb-text-muted);
+}
+
+.hb-meta {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--hb-text-muted);
+}
+
+.hb-badge {
+  display: inline-block;
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  background: var(--hb-surface-elevated);
+  border: 1px solid var(--hb-border);
+}
+
+.hb-dag {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 640px;
+}
+
+.hb-commit {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.65rem 0.85rem;
+  background: var(--hb-surface);
+  border: 1px solid var(--hb-border);
+  border-radius: 6px;
+  border-left: 3px solid var(--hb-accent);
+}
+
+.hb-commit.merge {
+  border-left-color: var(--hb-merge);
+}
+
+.hb-commit-head {
+  border-left-color: var(--hb-add);
+  box-shadow: 0 0 0 1px rgba(74, 222, 128, 0.2);
+}
+
+.hb-commit code {
+  font-size: 0.8rem;
+  color: var(--hb-accent);
+}
+
+.hb-commit-msg {
+  font-weight: 500;
+}
+
+.hb-commit-meta {
+  font-size: 0.75rem;
+  color: var(--hb-text-muted);
+  margin-top: 0.2rem;
+}
+
+.hb-diff-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.hb-diff-item {
+  padding: 0.75rem 1rem;
+  background: var(--hb-surface);
+  border: 1px solid var(--hb-border);
+  border-radius: 6px;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.hb-diff-kind {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  min-width: 4rem;
+  text-align: center;
+}
+
+.hb-diff-kind.add {
+  background: rgba(74, 222, 128, 0.15);
+  color: var(--hb-add);
+}
+
+.hb-diff-kind.remove {
+  background: rgba(248, 113, 113, 0.15);
+  color: var(--hb-remove);
+}
+
+.hb-diff-kind.modify {
+  background: rgba(251, 191, 36, 0.15);
+  color: var(--hb-modify);
+}
+
+.hb-empty {
+  color: var(--hb-text-muted);
+  font-style: italic;
+}
+
+.hb-select-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.hb-select-row label {
+  color: var(--hb-text-muted);
+  font-size: 0.85rem;
+}
+
+.hb-select-row select {
+  background: var(--hb-surface);
+  color: var(--hb-text);
+  border: 1px solid var(--hb-border);
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+}
+
+.hb-alpha-tag {
+  margin: auto 1rem 0.75rem;
+  padding: 0.35rem 0.5rem;
+  font-size: 0.65rem;
+  text-align: center;
+  color: var(--hb-text-muted);
+  border: 1px dashed var(--hb-border);
+  border-radius: 4px;
+}

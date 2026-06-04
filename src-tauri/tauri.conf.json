@@ -4,9 +4,12 @@
   "version": "0.1.0",
   "identifier": "dev.hummingbird.hbw",
   "build": {
-    "frontendDist": "../src"
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:5173",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
   },
   "app": {
-    "windows": [{ "title": "HBW", "width": 1024, "height": 768 }]
+    "windows": [{ "title": "HBW", "width": 1280, "height": 800 }]
   }
 }
