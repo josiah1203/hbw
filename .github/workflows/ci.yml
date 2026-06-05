@@ -2,6 +2,7 @@ name: ci
 on:
   push:
   pull_request:
+
 jobs:
   scaffold:
     runs-on: ubuntu-latest
@@ -12,3 +13,23 @@ jobs:
           node-version: "20"
       - run: npm ci
       - run: npm test
+
+  # Phase 0 M3: macOS Tauri artifact for internal alpha.
+  # Linux/Windows matrix deferred — see docs/PACKAGING.md.
+  tauri-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - uses: dtolnay/rust-toolchain@stable
+      - run: npm ci
+      - run: npm run tauri:build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hbw-macos-bundle
+          path: |
+            src-tauri/target/release/bundle/**/*.dmg
+            src-tauri/target/release/bundle/**/*.app
+          if-no-files-found: warn
