@@ -1,4 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
+import { AiLocalSidebar } from "@/components/AiLocalSidebar";
 
 const primaryNav = [
   { to: "/repositories", label: "Repositories" },
@@ -6,10 +7,11 @@ const primaryNav = [
   { to: "/diff", label: "Diff" },
 ] as const;
 
-const phase1Nav = [
-  { to: "/automation", label: "Automation", phase: "M3" },
-  { to: "/review", label: "Review", phase: "M3" },
-  { to: "/collab", label: "Collaboration", phase: "M3" },
+const m3Nav = [
+  { to: "/automation", label: "Automation" },
+  { to: "/review", label: "Review" },
+  { to: "/collab", label: "Collaboration" },
+  { to: "/research", label: "Research" },
 ] as const;
 
 export function AppShell() {
@@ -30,22 +32,18 @@ export function AppShell() {
               {label}
             </NavLink>
           ))}
-          <div className="hb-nav-section">Phase 1 stubs</div>
-          {phase1Nav.map(({ to, label, phase }) => (
+          <div className="hb-nav-section">M3 · Integration</div>
+          {m3Nav.map(({ to, label }) => (
             <NavLink
               key={to}
               to={to}
-              className={({ isActive }) =>
-                [isActive ? "active" : "", "disabled"].filter(Boolean).join(" ")
-              }
-              title={`${label} — ${phase} (not in alpha)`}
-              onClick={(e) => e.preventDefault()}
-              aria-disabled="true"
+              className={({ isActive }) => (isActive ? "active" : undefined)}
             >
               {label}
             </NavLink>
           ))}
         </nav>
+        <AiLocalSidebar />
         <div className="hb-alpha-tag">Phase 0 · no CAD authoring</div>
       </aside>
       <main className="hb-main">

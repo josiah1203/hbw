@@ -1,9 +1,12 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { AppShell } from "@/components/AppShell";
+import { AutomationPage } from "@/pages/AutomationPage";
+import { CollabPage } from "@/pages/CollabPage";
 import { DiffPage } from "@/pages/DiffPage";
 import { HistoryPage } from "@/pages/HistoryPage";
 import { RepositoriesPage } from "@/pages/RepositoriesPage";
-import { StubPage } from "@/pages/StubPage";
+import { ResearchPage } from "@/pages/ResearchPage";
+import { ReviewPage } from "@/pages/ReviewPage";
 
 export function App() {
   return (
@@ -14,36 +17,11 @@ export function App() {
         <Route path="history" element={<HistoryPage />} />
         <Route path="history/:repoId" element={<HistoryPage />} />
         <Route path="diff" element={<DiffPage />} />
-        <Route
-          path="automation"
-          element={
-            <StubPage
-              title="Automation Studio"
-              milestone="M3"
-              description="Built-in workflow checks and composer."
-            />
-          }
-        />
-        <Route
-          path="review"
-          element={
-            <StubPage
-              title="Review"
-              milestone="M3"
-              description="Review comments and approval shell."
-            />
-          }
-        />
-        <Route
-          path="collab"
-          element={
-            <StubPage
-              title="Collaboration"
-              milestone="M3"
-              description="Presence and activity feed."
-            />
-          }
-        />
+        <Route path="automation" element={<AutomationPage />} />
+        <Route path="review" element={<ReviewPage />} />
+        <Route path="review/:commitId" element={<ReviewPage />} />
+        <Route path="collab" element={<CollabPage />} />
+        <Route path="research" element={<ResearchPage />} />
         <Route path="*" element={<Navigate to="/repositories" replace />} />
       </Route>
     </Routes>
