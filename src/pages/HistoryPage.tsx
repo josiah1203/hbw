@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { getCommitGraph, mockRepositories } from "@/data/mock";
+import { useCommitGraph } from "@/hooks/useCommitGraph";
 import type { CommitNode } from "@/types/commit";
 
 function sortByTopology(nodes: CommitNode[], headId: string): CommitNode[] {
@@ -26,8 +26,10 @@ function sortByTopology(nodes: CommitNode[], headId: string): CommitNode[] {
 export function HistoryPage() {
   const navigate = useNavigate();
   const { repoId } = useParams<{ repoId?: string }>();
-  const selectedId = repoId ?? mockRepositories[0]?.id ?? "";
-  const graph = getCommitGraph(selectedId);
+  const { graph, loading, error, source, repositories } = useCommitGraph(
+    repoId ?? "",
+  );
+  const selectedId = repoId ?? repositories[0]?.id ?? "";
   const orderedNodes = useMemo(
     () => (graph ? sortByTopology(graph.nodes, graph.headId) : []),
     [graph],
@@ -37,7 +39,14 @@ export function HistoryPage() {
     <>
       <header className="hb-header">
         <h2>History</h2>
-        <p>Commit DAG placeholder — full graph layout in M3.</p>
+        <p>
+          Commit DAG
+          {source === "hos"
+            ? " (live HOS)"
+            : " (mock — set VITE_HBP_API_URL + VITE_HBP_ACCESS_TOKEN)"}
+        </p>
+        {loading && <p className="hb-meta">Loading…</p>}
+        {error && <p className="hb-meta">{error}</p>}
       </header>
       <div className="hb-content">
         <div className="hb-select-row">
@@ -47,7 +56,7 @@ export function HistoryPage() {
             value={selectedId}
             onChange={(e) => navigate(`/history/${e.target.value}`)}
           >
-            {mockRepositories.map((r) => (
+            {repositories.map((r) => (
               <option key={r.id} value={r.id}>
                 {r.name}
               </option>
@@ -61,6 +70,12 @@ export function HistoryPage() {
           <div className="hb-dag" role="list" aria-label="Commit history">
             {orderedNodes.map((node) => {
               const isHead = node.id === graph.headId;
+              const parentForDiff = node.parentIds[0];
+              const diffHref =
+                parentForDiff != null
+                  ? `/diff?repoId=${encodeURIComponent(node.repositoryId)}&from=${encodeURIComponent(parentForDiff)}&to=${encodeURIComponent(node.id)}`
+                  : null;
+
               return (
                 <article
                   key={node.id}
@@ -82,6 +97,15 @@ export function HistoryPage() {
                         ? ` · ${node.parentIds.length} parents`
                         : ""}
                     </div>
+                    {diffHref && (
+                      <Link
+                        to={diffHref}
+                        className="hb-diff-link"
+                        style={{ fontSize: "0.85rem", marginTop: "0.35rem", display: "inline-block" }}
+                      >
+                        View diff →
+                      </Link>
+                    )}
                   </div>
                 </article>
               );
