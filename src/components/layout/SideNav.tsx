@@ -26,11 +26,26 @@ const collabNav: NavItem[] = [
   { to: "/research", label: "Research", icon: "science" },
 ];
 
-function NavSection({ title, items }: { title: string; items: NavItem[] }) {
+function NavSection({
+  title,
+  items,
+  showAdd,
+}: {
+  title: string;
+  items: NavItem[];
+  showAdd?: boolean;
+}) {
   return (
     <div className="st-sidenav-section">
       <div className="st-sidenav-section-head">
         <span className="st-sidenav-section-label">{title}</span>
+        {showAdd && (
+          <button type="button" className="st-sidenav-section-action" aria-label={`Add ${title} view`}>
+            <span className="material-symbols-outlined" aria-hidden="true">
+              add
+            </span>
+          </button>
+        )}
       </div>
       {items.map(({ to, label, icon, end }) => (
         <NavLink
@@ -55,7 +70,7 @@ export function SideNav() {
   return (
     <aside className="st-sidenav" aria-label="Section navigation">
       <nav className="st-sidenav-nav">
-        <NavSection title="Views" items={viewsNav} />
+        <NavSection title="Views" items={viewsNav} showAdd />
         <NavSection title="Workflow" items={workflowNav} />
         <NavSection title="Collaboration" items={collabNav} />
       </nav>

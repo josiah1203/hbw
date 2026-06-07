@@ -61,9 +61,22 @@ export function DiffPage() {
             </span>
             <span className="st-panel-title">Structural changes</span>
             <span className="st-toolbar-divider" />
-            <span style={{ fontSize: 13, color: "var(--st-text-muted)" }}>
-              {session.hunks.length} hunks
-            </span>
+            <div className="st-toolbar-meta">
+              <span>{session.hunks.length} hunks</span>
+              {session.hunks.some((h) => h.kind === "remove") && (
+                <span className="st-toolbar-alert">
+                  <span className="material-symbols-outlined st-icon-sm" aria-hidden="true">
+                    warning
+                  </span>
+                  {session.hunks.filter((h) => h.kind === "remove").length} removals
+                </span>
+              )}
+            </div>
+          </div>
+          <div className="st-panel-toolbar-end">
+            <button type="button" className="st-btn">
+              Export
+            </button>
           </div>
         </div>
 
@@ -81,7 +94,10 @@ export function DiffPage() {
               </thead>
               <tbody>
                 {session.hunks.map((hunk) => (
-                  <tr key={hunk.path}>
+                  <tr
+                    key={hunk.path}
+                    className={hunk.kind === "remove" ? "st-table-row--alert" : undefined}
+                  >
                     <td>
                       <span className={`st-badge ${kindBadge[hunk.kind]}`}>
                         {kindLabels[hunk.kind]}

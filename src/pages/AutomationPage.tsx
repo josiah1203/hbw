@@ -56,6 +56,12 @@ export function AutomationPage() {
               </span>
               Refresh
             </button>
+            <button type="button" className="st-btn st-btn--primary">
+              <span className="material-symbols-outlined st-icon-sm" aria-hidden="true">
+                add
+              </span>
+              New check
+            </button>
           </div>
         </div>
         <div className="st-table-wrap">

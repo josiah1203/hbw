@@ -82,6 +82,12 @@ export function MarketplacePage() {
             <button type="button" className="st-btn st-btn--secondary" onClick={refresh} disabled={loading}>
               Refresh
             </button>
+            <button type="button" className="st-btn st-btn--primary">
+              <span className="material-symbols-outlined st-icon-sm" aria-hidden="true">
+                publish
+              </span>
+              Publish check
+            </button>
           </div>
         </div>
         <div className="st-panel-body st-panel-body--flush">

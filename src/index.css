@@ -1,30 +1,49 @@
-/* Stitch "Technical Precision" design system — HBW */
+/* Refine Modern GitHub Design — HBW (Technical Precision tokens) */
 
 :root {
-  /* Canvas & surfaces */
+  /* Canvas & surfaces (GitHub dark — authoritative from code.html) */
   --st-bg: #0d1117;
   --st-surface: #161b22;
   --st-surface-high: #21262d;
   --st-surface-highest: #30363d;
+  --st-surface-dim: #0d1117;
+  --st-surface-lowest: #0a0e14;
+  --st-surface-low: #181c22;
+  --st-surface-bright: #353940;
+  --st-surface-variant: #31353c;
   --st-border: #30363d;
+  --st-outline: #30363d;
+  --st-outline-variant: #30363d;
 
   /* Text */
   --st-text: #c9d1d9;
   --st-text-muted: #8b949e;
   --st-text-bright: #dfe2eb;
+  --st-on-surface: #c9d1d9;
+  --st-on-surface-variant: #8b949e;
+  --st-on-background: #dfe2eb;
 
   /* Brand */
   --st-primary: #58a6ff;
   --st-primary-dim: #acc7ff;
   --st-primary-container: #1f6feb;
+  --st-primary-fixed: #d7e2ff;
+  --st-inverse-primary: #005bbf;
   --st-secondary: #7bdb80;
   --st-secondary-container: #238636;
+  --st-secondary-fixed: #97f999;
   --st-tertiary: #d5baff;
+  --st-tertiary-container: #a678f3;
+  --st-surface-tint: #acc7ff;
+
+  /* GitHub repo nav accent (active section tab underline) */
+  --st-tab-accent: #f78166;
 
   /* Semantic */
   --st-success: #3fb950;
   --st-warning: #d29922;
   --st-error: #f85149;
+  --st-error-container: #da3633;
   --st-add: #3fb950;
   --st-remove: #f85149;
   --st-modify: #d29922;
@@ -68,6 +87,11 @@
 body {
   margin: 0;
   min-height: 100vh;
+}
+
+::selection {
+  background: var(--st-primary-container);
+  color: #ffffff;
 }
 
 #root {
@@ -227,7 +251,7 @@ pre,
 .st-top-tab--active {
   font-weight: 600;
   background: var(--st-surface-high);
-  border-bottom-color: var(--st-primary);
+  border-bottom-color: var(--st-tab-accent);
 }
 
 .st-topbar-end {
@@ -345,6 +369,34 @@ pre,
   justify-content: space-between;
   padding: 0 0.75rem;
   margin-bottom: 0.35rem;
+}
+
+.st-sidenav-section-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--st-text-muted);
+  cursor: pointer;
+  border-radius: var(--st-radius);
+}
+
+.st-sidenav-section-action:hover {
+  color: var(--st-text);
+}
+
+.st-sidenav-section-action .material-symbols-outlined {
+  font-size: 16px;
+}
+
+.st-sidenav-link .st-sidenav-icon--success {
+  color: var(--st-success);
+}
+
+.st-sidenav-link .st-sidenav-icon--primary {
+  color: var(--st-primary);
 }
 
 .st-sidenav-section-label {
@@ -476,9 +528,15 @@ pre,
 /* Cards & panels */
 .st-stat-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: 1fr;
   gap: 1.5rem;
   margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+  .st-stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .st-stat-card {
@@ -504,10 +562,18 @@ pre,
 }
 
 .st-stat-card-value {
-  font-size: 1.75rem;
+  font-size: 1.875rem;
   font-weight: 700;
   color: var(--st-text-bright);
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.st-stat-card-actions {
+  margin-top: 1rem;
+}
+
+.st-stat-card-actions .st-btn {
+  width: 100%;
 }
 
 .st-panel {
@@ -542,14 +608,49 @@ pre,
   font-weight: 600;
 }
 
-.st-toolbar-divider {
+.st-toolbar-divider,
+.st-divider-v {
   width: 1px;
   height: 1rem;
   background: var(--st-border);
+  flex-shrink: 0;
+}
+
+.st-toolbar-filter {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--st-text);
+}
+
+.st-toolbar-filter:hover {
+  color: var(--st-text-muted);
+}
+
+.st-toolbar-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 14px;
+  color: var(--st-text-muted);
+}
+
+.st-toolbar-alert {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--st-error);
 }
 
 .st-panel-body {
   padding: 1rem;
+}
+
+.st-panel-body--flush {
+  padding: 0;
 }
 
 /* Badges */
@@ -638,6 +739,12 @@ pre,
   background: transparent;
 }
 
+.st-btn--secondary {
+  background: var(--st-surface-high);
+  border-color: var(--st-border);
+  color: var(--st-text);
+}
+
 /* Inputs */
 .st-input,
 .st-select {
@@ -707,6 +814,49 @@ pre,
   background: var(--st-surface);
 }
 
+.st-table tbody tr.st-table-row--selected {
+  background: rgba(56, 139, 253, 0.1);
+}
+
+.st-table tbody tr.st-table-row--alert {
+  background: rgba(218, 54, 51, 0.05);
+}
+
+.st-table-desc {
+  color: var(--st-text-muted);
+}
+
+.st-table-mono {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 12px;
+}
+
+.st-risk-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.st-risk-dot--success {
+  background: var(--st-success);
+}
+
+.st-risk-dot--warning {
+  background: var(--st-warning);
+}
+
+.st-risk-dot--error {
+  background: var(--st-error);
+}
+
+.st-risk-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .st-table-link {
   font-weight: 600;
   color: var(--st-primary);
@@ -724,6 +874,45 @@ pre,
   background: var(--st-surface);
   font-size: 12px;
   color: var(--st-text-muted);
+}
+
+.st-pagination {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 12px;
+  color: var(--st-text-muted);
+}
+
+.st-pagination-btn {
+  padding: 0.25rem 0.75rem;
+  border: 1px solid var(--st-border);
+  border-radius: var(--st-radius);
+  background: transparent;
+  color: var(--st-text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.st-pagination-btn:hover:not(:disabled) {
+  background: var(--st-surface-high);
+}
+
+.st-pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.st-pagination-btn--active {
+  background: var(--st-primary-container);
+  border-color: var(--st-primary-container);
+  color: #ffffff;
+}
+
+.st-pagination-ellipsis {
+  padding: 0 0.5rem;
 }
 
 /* Section spacing */

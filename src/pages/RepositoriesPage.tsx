@@ -7,6 +7,7 @@ export function RepositoriesPage() {
 
   const totalCommits = repositories.reduce((sum, r) => sum + r.commitCount, 0);
   const publicCount = repositories.filter((r) => r.visibility === "public").length;
+  const privateCount = repositories.length - publicCount;
 
   return (
     <>
@@ -34,39 +35,68 @@ export function RepositoriesPage() {
           </div>
           <div className="st-stat-card-value">{repositories.length}</div>
           <div className="st-form-row" style={{ margin: 0 }}>
-            <span className="st-badge st-badge--primary">
-              {publicCount} public
-            </span>
-            <span className="st-badge st-badge--muted">
-              {repositories.length - publicCount} private
-            </span>
+            <span className="st-badge st-badge--primary">{publicCount} public</span>
+            <span className="st-badge st-badge--success">{privateCount} private</span>
           </div>
         </article>
         <article className="st-stat-card">
           <div className="st-stat-card-head">
             <span className="st-stat-card-label">Total commits</span>
-            <span className="material-symbols-outlined st-icon-sm" aria-hidden="true">
-              history
-            </span>
+            <div className="st-status">
+              <span className="st-status-dot" aria-hidden="true" />
+              <span style={{ fontSize: 12, color: "var(--st-text-muted)" }}>Active</span>
+            </div>
           </div>
-          <div className="st-stat-card-value">{totalCommits}</div>
-          <p style={{ margin: 0, fontSize: 13, color: "var(--st-text-muted)" }}>
+          <div className="st-stat-card-value">{totalCommits.toLocaleString()}</div>
+          <p style={{ margin: 0, fontSize: 14, color: "var(--st-text-muted)" }}>
             Across all connected hardware repositories
           </p>
+          <div className="st-stat-card-actions">
+            <Link to="/history" className="st-btn st-btn--primary">
+              <span className="material-symbols-outlined st-icon-sm" aria-hidden="true">
+                history
+              </span>
+              View commit history
+            </Link>
+          </div>
         </article>
       </div>
 
       <div className="st-panel">
         <div className="st-panel-toolbar">
           <div className="st-panel-toolbar-start">
-            <span className="material-symbols-outlined st-icon-sm" aria-hidden="true">
-              filter_list
-            </span>
-            <span className="st-panel-title">All repositories</span>
+            <button type="button" className="st-toolbar-filter">
+              <span className="material-symbols-outlined st-icon-sm" aria-hidden="true">
+                filter_list
+              </span>
+              Filters
+            </button>
             <span className="st-toolbar-divider" />
-            <span style={{ fontSize: 13, color: "var(--st-text-muted)" }}>
-              {repositories.length} repos
-            </span>
+            <div className="st-toolbar-meta">
+              <span>{repositories.length} repos</span>
+              {error && (
+                <span className="st-toolbar-alert">
+                  <span className="material-symbols-outlined st-icon-sm" aria-hidden="true">
+                    error
+                  </span>
+                  API fallback
+                </span>
+              )}
+            </div>
+          </div>
+          <div className="st-panel-toolbar-end">
+            <button type="button" className="st-btn">
+              Sort
+            </button>
+            <button type="button" className="st-btn">
+              Export
+            </button>
+            <button type="button" className="st-btn st-btn--primary">
+              <span className="material-symbols-outlined st-icon-sm" aria-hidden="true">
+                add
+              </span>
+              New repository
+            </button>
           </div>
         </div>
         <div className="st-table-wrap">
@@ -77,7 +107,7 @@ export function RepositoriesPage() {
                 <th>Description</th>
                 <th>Visibility</th>
                 <th>Default branch</th>
-                <th>Commits</th>
+                <th style={{ textAlign: "right" }}>Commits</th>
               </tr>
             </thead>
             <tbody>
@@ -88,7 +118,7 @@ export function RepositoriesPage() {
                       {repo.name}
                     </Link>
                   </td>
-                  <td style={{ color: "var(--st-text-muted)" }}>{repo.description}</td>
+                  <td className="st-table-desc">{repo.description}</td>
                   <td>
                     <span
                       className={`st-badge ${
@@ -112,7 +142,18 @@ export function RepositoriesPage() {
           </table>
         </div>
         <div className="st-table-footer">
-          {repositories.length} repositories · {source === "hos" ? "live" : "mock"} data
+          <nav className="st-pagination" aria-label="Repository pagination">
+            <button type="button" className="st-pagination-btn" disabled>
+              Previous
+            </button>
+            <button type="button" className="st-pagination-btn st-pagination-btn--active">
+              1
+            </button>
+            <span className="st-pagination-ellipsis">…</span>
+            <button type="button" className="st-pagination-btn" disabled>
+              Next
+            </button>
+          </nav>
         </div>
       </div>
     </>

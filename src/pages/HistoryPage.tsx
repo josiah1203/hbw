@@ -80,6 +80,9 @@ export function HistoryPage() {
               <span className="st-badge st-badge--primary">
                 {orderedNodes.length} commits
               </span>
+              <button type="button" className="st-btn">
+                Export
+              </button>
             </div>
           )}
         </div>
