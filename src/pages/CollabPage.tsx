@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { isHosConfigured } from "@/api/hosClient";
+import { PageHeader } from "@/components/layout/PageHeader";
 import { useRepositories } from "@/hooks/useRepositories";
 
 interface PresenceRow {
@@ -92,42 +93,85 @@ export function CollabPage() {
 
   return (
     <>
-      <header className="hb-header">
-        <h2>Collaboration</h2>
-        <p>
-          CRDT presence via <code>/v1/collaboration/presence</code>
-          {live ? " (live)" : " (mock — configure API env)"}
-        </p>
-        {repoSource === "mock" && (
-          <p className="hb-meta">Mock repository — presence requires a live project.</p>
-        )}
-        {loading && <p className="hb-meta">Syncing presence…</p>}
-        {error && <p className="hb-meta">{error}</p>}
-      </header>
-      <div className="hb-content">
-        <div className="hb-select-row">
-          <button type="button" onClick={() => void heartbeat()} disabled={!live || !projectId}>
+      <PageHeader
+        title="Collaboration"
+        description="CRDT presence via /v1/collaboration/presence"
+        meta={
+          <>
+            {live ? "Live" : "Mock — configure API env"}
+            {repoSource === "mock" && " · Mock repository"}
+            {loading && " · Syncing presence…"}
+            {error && ` · ${error}`}
+          </>
+        }
+        actions={
+          <button
+            type="button"
+            className="st-btn st-btn--primary"
+            onClick={() => void heartbeat()}
+            disabled={!live || !projectId}
+          >
+            <span className="material-symbols-outlined st-icon-sm" aria-hidden="true">
+              sync
+            </span>
             Heartbeat now
           </button>
+        }
+      />
+
+      <div className="st-panel">
+        <div className="st-panel-toolbar">
+          <div className="st-panel-toolbar-start">
+            <span className="material-symbols-outlined st-icon-sm" aria-hidden="true">
+              groups
+            </span>
+            <span className="st-panel-title">Active editors</span>
+            <span className="st-toolbar-divider" />
+            <span style={{ fontSize: 13, color: "var(--st-text-muted)" }}>
+              {presence.length} online
+            </span>
+          </div>
         </div>
 
         {presence.length === 0 ? (
-          <p className="hb-empty">
+          <p className="st-empty">
             {live ? "No other editors online." : "Presence feed unavailable offline."}
           </p>
         ) : (
-          <ul className="hb-presence-list">
-            {presence.map((row) => (
-              <li key={row.session_id} className="hb-presence-row">
-                <strong>{row.user_id.slice(0, 8)}</strong>
-                <span>{row.resource_path}</span>
-                <span className="hb-badge">{row.domain ?? "—"}</span>
-                <time dateTime={row.last_seen_at}>
-                  {new Date(row.last_seen_at).toLocaleTimeString()}
-                </time>
-              </li>
-            ))}
-          </ul>
+          <div className="st-table-wrap">
+            <table className="st-table">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Resource</th>
+                  <th>Domain</th>
+                  <th>Last seen</th>
+                </tr>
+              </thead>
+              <tbody>
+                {presence.map((row) => (
+                  <tr key={row.session_id}>
+                    <td>
+                      <code className="st-mono">{row.user_id.slice(0, 8)}</code>
+                    </td>
+                    <td>
+                      <code className="st-mono">{row.resource_path}</code>
+                    </td>
+                    <td>
+                      <span className="st-badge st-badge--tertiary">
+                        {row.domain ?? "—"}
+                      </span>
+                    </td>
+                    <td style={{ color: "var(--st-text-muted)", fontSize: 13 }}>
+                      <time dateTime={row.last_seen_at}>
+                        {new Date(row.last_seen_at).toLocaleTimeString()}
+                      </time>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </>

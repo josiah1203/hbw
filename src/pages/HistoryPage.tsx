@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { PageHeader } from "@/components/layout/PageHeader";
 import { useCommitGraph } from "@/hooks/useCommitGraph";
 import type { CommitNode } from "@/types/commit";
 
@@ -37,81 +38,110 @@ export function HistoryPage() {
 
   return (
     <>
-      <header className="hb-header">
-        <h2>History</h2>
-        <p>
-          Commit DAG
-          {source === "hos"
-            ? " (live HOS)"
-            : " (mock — set VITE_HBP_API_URL + VITE_HBP_ACCESS_TOKEN)"}
-        </p>
-        {loading && <p className="hb-meta">Loading…</p>}
-        {error && <p className="hb-meta">{error}</p>}
-      </header>
-      <div className="hb-content">
-        <div className="hb-select-row">
-          <label htmlFor="repo-select">Repository</label>
-          <select
-            id="repo-select"
-            value={selectedId}
-            onChange={(e) => navigate(`/history/${e.target.value}`)}
-          >
-            {repositories.map((r) => (
-              <option key={r.id} value={r.id}>
-                {r.name}
-              </option>
-            ))}
-          </select>
-          <Link to="/repositories">← All repositories</Link>
-        </div>
-        {!graph ? (
-          <p className="hb-empty">No commit graph for this repository.</p>
-        ) : (
-          <div className="hb-dag" role="list" aria-label="Commit history">
-            {orderedNodes.map((node) => {
-              const isHead = node.id === graph.headId;
-              const parentForDiff = node.parentIds[0];
-              const diffHref =
-                parentForDiff != null
-                  ? `/diff?repoId=${encodeURIComponent(node.repositoryId)}&from=${encodeURIComponent(parentForDiff)}&to=${encodeURIComponent(node.id)}`
-                  : null;
+      <PageHeader
+        title="History"
+        description="Commit DAG"
+        meta={
+          <>
+            {source === "hos"
+              ? "Live HOS"
+              : "Mock — set VITE_HBP_API_URL + VITE_HBP_ACCESS_TOKEN"}
+            {loading && " · Loading…"}
+            {error && ` · ${error}`}
+          </>
+        }
+      />
 
-              return (
-                <article
-                  key={node.id}
-                  role="listitem"
-                  className={[
-                    "hb-commit",
-                    node.kind === "merge" ? "merge" : "",
-                    isHead ? "hb-commit-head" : "",
-                  ]
-                    .filter(Boolean)
-                    .join(" ")}
-                >
-                  <div>
-                    <code>{node.shortHash}</code>
-                    <div className="hb-commit-msg">{node.message}</div>
-                    <div className="hb-commit-meta">
-                      {node.author} · {node.branch}
-                      {node.parentIds.length > 1
-                        ? ` · ${node.parentIds.length} parents`
-                        : ""}
-                    </div>
-                    {diffHref && (
-                      <Link
-                        to={diffHref}
-                        className="hb-diff-link"
-                        style={{ fontSize: "0.85rem", marginTop: "0.35rem", display: "inline-block" }}
-                      >
-                        View diff →
-                      </Link>
-                    )}
-                  </div>
-                </article>
-              );
-            })}
+      <div className="st-panel">
+        <div className="st-panel-toolbar">
+          <div className="st-panel-toolbar-start">
+            <label htmlFor="repo-select" className="st-label">
+              Repository
+            </label>
+            <select
+              id="repo-select"
+              className="st-select"
+              value={selectedId}
+              onChange={(e) => navigate(`/history/${e.target.value}`)}
+            >
+              {repositories.map((r) => (
+                <option key={r.id} value={r.id}>
+                  {r.name}
+                </option>
+              ))}
+            </select>
+            <span className="st-toolbar-divider" />
+            <Link to="/repositories" className="st-table-link" style={{ fontSize: 13 }}>
+              ← All repositories
+            </Link>
           </div>
-        )}
+          {graph && (
+            <div className="st-panel-toolbar-end">
+              <span className="st-badge st-badge--primary">
+                {orderedNodes.length} commits
+              </span>
+            </div>
+          )}
+        </div>
+
+        <div className="st-panel-body">
+          {!graph ? (
+            <p className="st-empty">No commit graph for this repository.</p>
+          ) : (
+            <div className="hb-dag" role="list" aria-label="Commit history">
+              {orderedNodes.map((node) => {
+                const isHead = node.id === graph.headId;
+                const parentForDiff = node.parentIds[0];
+                const diffHref =
+                  parentForDiff != null
+                    ? `/diff?repoId=${encodeURIComponent(node.repositoryId)}&from=${encodeURIComponent(parentForDiff)}&to=${encodeURIComponent(node.id)}`
+                    : null;
+
+                return (
+                  <article
+                    key={node.id}
+                    role="listitem"
+                    className={[
+                      "hb-commit",
+                      node.kind === "merge" ? "merge" : "",
+                      isHead ? "hb-commit-head" : "",
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
+                  >
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                        <code>{node.shortHash}</code>
+                        {isHead && (
+                          <span className="st-badge st-badge--success">HEAD</span>
+                        )}
+                        {node.kind === "merge" && (
+                          <span className="st-badge st-badge--tertiary">merge</span>
+                        )}
+                      </div>
+                      <div className="hb-commit-msg">{node.message}</div>
+                      <div className="hb-commit-meta">
+                        {node.author} · {node.branch}
+                        {node.parentIds.length > 1
+                          ? ` · ${node.parentIds.length} parents`
+                          : ""}
+                      </div>
+                      {diffHref && (
+                        <Link
+                          to={diffHref}
+                          className="st-table-link"
+                          style={{ fontSize: 13, marginTop: "0.35rem", display: "inline-block" }}
+                        >
+                          View diff →
+                        </Link>
+                      )}
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

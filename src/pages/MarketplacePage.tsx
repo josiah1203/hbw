@@ -5,6 +5,7 @@ import {
   isMarketplaceConfigured,
   type MarketplaceListing,
 } from "@/api/marketplaceClient";
+import { PageHeader } from "@/components/layout/PageHeader";
 
 export function MarketplacePage() {
   const [listings, setListings] = useState<MarketplaceListing[]>([]);
@@ -42,59 +43,96 @@ export function MarketplacePage() {
 
   return (
     <>
-      <header className="hb-header">
-        <h2>Workflow Marketplace</h2>
-        <p>
-          Community checks — list, publish, install
-          {isMarketplaceConfigured()
-            ? " (live API)"
-            : " (mock — set VITE_HBP_API_URL + token)"}
-        </p>
-        {message && <p className="hb-meta">{message}</p>}
-      </header>
-      <div className="hb-content">
-        <div className="hb-select-row">
-          <label htmlFor="marketplace-domain">Domain filter</label>
-          <select
-            id="marketplace-domain"
-            value={domainFilter}
-            onChange={(e) => setDomainFilter(e.target.value)}
-          >
-            <option value="">All domains</option>
-            <option value="bim">bim</option>
-            <option value="structural">structural</option>
-            <option value="energy_building">energy_building</option>
-            <option value="layout">layout</option>
-          </select>
-          <button type="button" onClick={refresh} disabled={loading}>
-            Refresh
-          </button>
-        </div>
+      <PageHeader
+        title="Workflow Marketplace"
+        description="Community checks — list, publish, install"
+        meta={
+          <>
+            {isMarketplaceConfigured()
+              ? "Live API"
+              : "Mock — set VITE_HBP_API_URL + token"}
+            {message && ` · ${message}`}
+          </>
+        }
+      />
 
-        {loading ? (
-          <p className="hb-meta">Loading listings…</p>
-        ) : (
-          <div className="hb-card-grid">
-            {listings.map((listing) => (
-              <article key={listing.listing_id} className="hb-card hb-card-static">
-                <h3>{listing.name}</h3>
-                <p>{listing.description}</p>
-                <p>
-                  <code>{listing.check_id}</code> · {listing.domain} · {listing.install_count}{" "}
-                  installs
-                </p>
-                <button
-                  type="button"
-                  className="hb-btn"
-                  disabled={installingId === listing.listing_id}
-                  onClick={() => void handleInstall(listing.listing_id)}
-                >
-                  {installingId === listing.listing_id ? "Installing…" : "Install"}
-                </button>
-              </article>
-            ))}
+      <div className="st-panel">
+        <div className="st-panel-toolbar">
+          <div className="st-panel-toolbar-start">
+            <span className="material-symbols-outlined st-icon-sm" aria-hidden="true">
+              storefront
+            </span>
+            <span className="st-panel-title">Listings</span>
+            <span className="st-divider-v" />
+            <label htmlFor="marketplace-domain">Domain</label>
+            <select
+              id="marketplace-domain"
+              className="st-select"
+              value={domainFilter}
+              onChange={(e) => setDomainFilter(e.target.value)}
+            >
+              <option value="">All domains</option>
+              <option value="bim">bim</option>
+              <option value="structural">structural</option>
+              <option value="energy_building">energy_building</option>
+              <option value="layout">layout</option>
+            </select>
           </div>
-        )}
+          <div className="st-panel-toolbar-end">
+            <button type="button" className="st-btn st-btn--secondary" onClick={refresh} disabled={loading}>
+              Refresh
+            </button>
+          </div>
+        </div>
+        <div className="st-panel-body st-panel-body--flush">
+          {loading ? (
+            <p className="hb-empty">Loading listings…</p>
+          ) : (
+            <div className="st-table-wrap">
+              <table className="st-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Check ID</th>
+                    <th>Domain</th>
+                    <th>Installs</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {listings.map((listing) => (
+                    <tr key={listing.listing_id}>
+                      <td>
+                        <strong>{listing.name}</strong>
+                      </td>
+                      <td>
+                        <span className="st-table-desc">{listing.description}</span>
+                      </td>
+                      <td>
+                        <code className="st-table-mono">{listing.check_id}</code>
+                      </td>
+                      <td>
+                        <span className="st-badge st-badge--tertiary">{listing.domain}</span>
+                      </td>
+                      <td>{listing.install_count}</td>
+                      <td>
+                        <button
+                          type="button"
+                          className="st-btn st-btn--primary"
+                          disabled={installingId === listing.listing_id}
+                          onClick={() => void handleInstall(listing.listing_id)}
+                        >
+                          {installingId === listing.listing_id ? "Installing…" : "Install"}
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
