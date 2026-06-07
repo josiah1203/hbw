@@ -4,9 +4,11 @@ import { AutomationPage } from "@/pages/AutomationPage";
 import { CollabPage } from "@/pages/CollabPage";
 import { DiffPage } from "@/pages/DiffPage";
 import { HistoryPage } from "@/pages/HistoryPage";
+import { MarketplacePage } from "@/pages/MarketplacePage";
 import { RepositoriesPage } from "@/pages/RepositoriesPage";
 import { ResearchPage } from "@/pages/ResearchPage";
 import { ReviewPage } from "@/pages/ReviewPage";
+import { WorkflowComposerPage } from "@/pages/WorkflowComposerPage";
 
 export function App() {
   return (
@@ -18,6 +20,8 @@ export function App() {
         <Route path="history/:repoId" element={<HistoryPage />} />
         <Route path="diff" element={<DiffPage />} />
         <Route path="automation" element={<AutomationPage />} />
+        <Route path="automation/composer" element={<WorkflowComposerPage />} />
+        <Route path="automation/marketplace" element={<MarketplacePage />} />
         <Route path="review" element={<ReviewPage />} />
         <Route path="review/:commitId" element={<ReviewPage />} />
         <Route path="collab" element={<CollabPage />} />

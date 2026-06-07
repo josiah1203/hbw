@@ -9,6 +9,8 @@ const primaryNav = [
 
 const m3Nav = [
   { to: "/automation", label: "Automation" },
+  { to: "/automation/composer", label: "Composer" },
+  { to: "/automation/marketplace", label: "Marketplace" },
   { to: "/review", label: "Review" },
   { to: "/collab", label: "Collaboration" },
   { to: "/research", label: "Research" },
@@ -44,7 +46,7 @@ export function AppShell() {
           ))}
         </nav>
         <AiLocalSidebar />
-        <div className="hb-alpha-tag">Phase 0 · no CAD authoring</div>
+        <div className="hb-alpha-tag">Phase 1 · workflow cloud</div>
       </aside>
       <main className="hb-main">
         <Outlet />

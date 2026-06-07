@@ -650,3 +650,87 @@ button {
 .hb-ai-info span {
   color: var(--hb-text-muted);
 }
+
+.hb-composer-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.hb-composer-palette {
+  background: var(--hb-surface);
+  border: 1px solid var(--hb-border);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.hb-palette-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.hb-step-chain {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.hb-step {
+  background: var(--hb-surface);
+  border: 1px solid var(--hb-border);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.hb-step-trigger {
+  border-left: 3px solid var(--hb-accent);
+}
+
+.hb-step-condition {
+  border-left: 3px solid var(--hb-modify);
+}
+
+.hb-step-action {
+  border-left: 3px solid var(--hb-add);
+}
+
+.hb-step-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.hb-step-config {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.25rem 1rem;
+  margin: 0 0 0.75rem;
+}
+
+.hb-step-config dt {
+  color: var(--hb-text-muted);
+  margin: 0;
+}
+
+.hb-step-config dd {
+  margin: 0;
+}
+
+.hb-step-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.hb-btn-secondary {
+  background: var(--hb-surface-elevated);
+  border: 1px solid var(--hb-border);
+}
